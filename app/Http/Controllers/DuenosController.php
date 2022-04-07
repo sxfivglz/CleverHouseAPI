@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Dueno;
 use Illuminate\Http\Request;
 use JWTAuth;
+use App\Http\Controllers\AdafruitController;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 
@@ -124,6 +125,15 @@ class DuenosController extends Controller
         //Eliminamos el duenoo
         $dueno->delete();
         //Devolvemos la respuesta
+        return response()->json([
+            'message' => 'Dueño eliminado'
+        ], Response::HTTP_OK);
+    }
+    public function comparacion(Request $request)
+    {
+        $objeto = new AdafruitController();
+        $myVariable = $objeto->ultimo_data($request->feed);
+        $query="SELECT * FROM duenos where nombre_usuario".$request->nombre_usuario."";
         return response()->json([
             'message' => 'Dueño eliminado'
         ], Response::HTTP_OK);

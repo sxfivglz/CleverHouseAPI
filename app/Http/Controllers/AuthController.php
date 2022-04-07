@@ -77,8 +77,7 @@ class AuthController extends Controller
         }
         //Devolvemos el token
         return response()->json([
-            'token' => $token,
-            'user' => Auth::user()
+            $token,
         ]);
     }
     public function datosUsuario(Request $request)
