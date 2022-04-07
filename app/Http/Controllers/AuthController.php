@@ -77,7 +77,7 @@ class AuthController extends Controller
         }
         //Devolvemos el token
         return response()->json([
-            $token,
+            'token'=>$token,
         ]);
     }
     public function datosUsuario(Request $request)
