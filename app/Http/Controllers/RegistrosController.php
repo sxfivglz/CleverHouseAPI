@@ -58,10 +58,7 @@ class RegistrosController extends Controller
             'detalle_sensor_fk'=>$request->detalle_sensor_fk,
             'columna_1'=>"medicion ".$request->feed,
         ]);
-        //Insertamos en adafruit
-        $objeto = new AdafruitController();
-        $myVariable = $objeto->ultimo_data($request->feed);
-        //$feed=query;
+    
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
             'message' => 'Dato registrado',
@@ -74,7 +71,7 @@ class RegistrosController extends Controller
     {
         //Insertamos en adafruit
         $objeto = new AdafruitController();
-        $myVariable = $objeto->ultimo_data($request->feed);
+        $myVariable = $objeto->cambiarLed($request->feed);
         $obj=$myVariable->object();
         $est=$obj->value;
         if($est=="0");
@@ -95,10 +92,7 @@ class RegistrosController extends Controller
             'detalle_sensor_fk'=>$request->detalle_sensor_fk,
             'columna_1'=>"medicion ".$request->feed,
         ]);
-        //Insertamos en adafruit
-        $objeto = new AdafruitController();
-        $myVariable = $objeto->ultimo_data($request->feed);
-        //$feed=query;
+        
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
             'message' => 'Dato registrado',
@@ -134,8 +128,11 @@ class RegistrosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //Insertamos en adafruit
+        $objeto = new AdafruitController();
+        $myVariable = $objeto->ultimo_data($request->feed);
         //Validación de datos
-        $data = $request->only('medicion','detalle_sensor_fk','columna_1','columna_2','columna_3','columna_4');
+        $data = $request->only('medicion','detalle_sensor_fk','columna_1');
         $validator = Validator::make($data, [
             'medicion' => 'required|string',
             'detalle_sensor_fk'=>'required|string',
@@ -145,7 +142,7 @@ class RegistrosController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
         }
-        //Buscamos el Registroso
+        //Buscamos el Registro
         $Registro = Registro::findOrfail($id);
         //Actualizamos el Registroso.
         $Registro->update([
@@ -156,7 +153,8 @@ class RegistrosController extends Controller
         //Devolvemos los datos actualizados.
         return response()->json([
             'message' => 'Dato actualizado',
-            'data' => $Registro
+            'data' => $Registro,
+            'ada_res'=>$myVariable
         ], Response::HTTP_CREATED);
     }
     /**

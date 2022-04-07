@@ -42,7 +42,7 @@ class DuenosController extends Controller
         $validator = Validator::make($data, [
             'nombre_dueno' => 'required|max:50|string',
             'usuario_fk'=>'required|string',
-            'columna_1'=>'string',
+            'columna_1'=>'required|string',
         ]);
         //Si falla la validación
         if ($validator->fails()) {
@@ -89,11 +89,10 @@ class DuenosController extends Controller
     public function update(Request $request, $id)
     {
         //Validación de datos
-        $data = $request->only('nombre_dueno','usuario_fk','columna_1');
+        $data = $request->only('nombre_dueno','usuario_fk');
         $validator = Validator::make($data, [
             'nombre_dueno' => 'required|max:50|string',
             'usuario_fk'=>'required|string',
-            'columna_1'=>'string',
         ]);
         //Si falla la validación error.
         if ($validator->fails()) {
@@ -105,7 +104,6 @@ class DuenosController extends Controller
         $dueno->update([
             'nombre_dueno' => $request->nombre_dueno,
             'usuario_fk'=>$request->usuario_fk,
-            'columna_1'=>$request->columna_1,
         ]);
         //Devolvemos los datos actualizados.
         return response()->json([

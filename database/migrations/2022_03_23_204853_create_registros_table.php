@@ -18,10 +18,10 @@ class CreateRegistrosTable extends Migration
             $table->string('medicion');
             $table->unsignedBigInteger('detalle_sensor_fk');
             $table->foreign('detalle_sensor_fk')->references('id')->on('detalle_sensores');
-            $table->string('columna_1')->nullable();
-            $table->string('columna_2')->nullable();
-            $table->string('columna_3')->nullable();
-            $table->string('columna_4')->nullable();
+            $table->string('columna_1');
+            $table->string('columna_2');
+            $table->string('columna_3');
+            $table->string('columna_4');
             $table->timestamps();
         });
     }

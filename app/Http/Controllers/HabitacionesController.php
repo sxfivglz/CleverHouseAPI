@@ -39,6 +39,9 @@ class HabitacionesController extends Controller
      */
     public function store(Request $request)
     {
+        //Insertamos en adafruit
+        $objeto = new AdafruitController();
+        $myVariable = $objeto->añadirHab($request->nombre_habitacion);
         //Validamos los datos
         $data = $request->only('nombre_habitacion');
         $validator = Validator::make($data, [
@@ -57,6 +60,7 @@ class HabitacionesController extends Controller
         return response()->json([
             'message' => 'Habitacion registrado',
             'data' => $val,
+            'ada'=>$myVariable
         ], Response::HTTP_OK);
     }
     /**
@@ -85,10 +89,15 @@ class HabitacionesController extends Controller
      * @param  \App\Models\Habitacion  $Habitacion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+
+     //necesita el nombre de la habitacion en la que se encuentra de android, ademas del nuevo nombre
+    public function update(Request $request,$id)
     {
+        //Insertamos en adafruit
+        $objeto = new AdafruitController();
+        $myVariable = $objeto->modificarHabitacion($request->nombre_ada,$request->nuevoNombre);
         //Validación de datos
-        $data = $request->only('nombre_habitacion','columna_1','columna_2','columna_3','columna_4');
+        $data = $request->only('nombre_habitacion');
         $validator = Validator::make($data, [
             'nombre_habitacion' => 'required|string',
         ]);
@@ -105,7 +114,8 @@ class HabitacionesController extends Controller
         //Devolvemos los datos actualizados.
         return response()->json([
             'message' => 'Habitacion actualizado',
-            'data' => $Habitacion
+            'data' => $Habitacion,
+            'ada'=>$myVariable
         ], Response::HTTP_CREATED);
     }
     /**
@@ -114,15 +124,20 @@ class HabitacionesController extends Controller
      * @param  \App\Models\Habitacion  $Habitacion
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
+        //Eliminamos en adafruit
+        $objeto = new AdafruitController();
+        $myVariable = $objeto->eliminarHabitacion($request->nombre);
         //Buscamos el Habitaciono
         $Habitacion = Habitacion::findOrfail($id);
         //Eliminamos el Habitaciono
         $Habitacion->delete();
         //Devolvemos la respuesta
         return response()->json([
-            'message' => 'Habitacion eliminado'
+            'message' => 'Habitacion eliminado',
+            'ada' => $myVariable,
         ], Response::HTTP_OK);
     }
+    
 }

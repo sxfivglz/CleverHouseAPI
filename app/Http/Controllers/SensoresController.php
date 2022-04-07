@@ -38,6 +38,9 @@ class SensoresController extends Controller
      */
     public function store(Request $request)
     {
+        //Insertamos en adafruit
+        $objeto = new AdafruitController();
+        $myVariable = $objeto->crearSensor($request->habitacion,$request->nombre_sensor);
         //Validamos los datos
         $data = $request->only('nombre_sensor');
         $validator = Validator::make($data, [
@@ -54,7 +57,8 @@ class SensoresController extends Controller
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
             'message' => 'Sensor registrado',
-            'data' => $val
+            'data' => $val,
+            'ada'=>$myVariable
         ], Response::HTTP_OK);
     }
     /**
@@ -85,6 +89,9 @@ class SensoresController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //Insertamos en adafruit
+        $objeto = new AdafruitController();
+        $myVariable = $objeto->modificarSensor($request->habitacion,$request->nombre,$request->nombre_sensor);
         //Validación de datos
         $data = $request->only('nombre_sensor');
         $validator = Validator::make($data, [
@@ -103,7 +110,8 @@ class SensoresController extends Controller
         //Devolvemos los datos actualizados.
         return response()->json([
             'message' => 'Sensor actualizado',
-            'data' => $Sensor
+            'data' => $Sensor,
+            'ada'=>$myVariable
         ], Response::HTTP_CREATED);
     }
     /**
@@ -112,15 +120,19 @@ class SensoresController extends Controller
      * @param  \App\Models\Sensor  $Sensor
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //Buscamos el Sensoro
+        //Eliminamos en adafruit
+        $objeto = new AdafruitController();
+        $myVariable = $objeto->eliminarSensor($request->habitacion,$request->nombre);
+        //Buscamos el Sensor
         $Sensor = Sensor::findOrfail($id);
-        //Eliminamos el Sensoro
+        //Eliminamos el Sensor
         $Sensor->delete();
         //Devolvemos la respuesta
         return response()->json([
-            'message' => 'Sensor eliminado'
+            'message' => 'Sensor eliminado',
+            'ada'=>$myVariable
         ], Response::HTTP_OK);
     }
 }

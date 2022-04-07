@@ -81,6 +81,71 @@ class AuthController extends Controller
             'user' => Auth::user()
         ]);
     }
+    public function datosUsuario(Request $request)
+    {
+        //Indicamos que solo queremos recibir email y password de la request
+        $credentials = $request->only('email', 'password');
+        //Validaciones
+        $validator = Validator::make($credentials, [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6|max:50'
+        ]);
+        //Devolvemos un error de validación en caso de fallo en las verificaciones
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 400);
+        }
+        //Intentamos hacer login
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                //Credenciales incorrectas.
+                return response()->json([
+                    'message' => 'Login failed',
+                ], 401);
+            }
+        } catch (JWTException $e) {
+            //Error chungo
+            return response()->json([
+                'message' => 'Error',
+            ], 500);
+        }
+        //Devolvemos el token
+        return response()->json([
+            'user' => Auth::user()
+        ]);
+    }
+    //para el arduino
+    public function traerToken(Request $request)
+    {
+        //Indicamos que solo queremos recibir email y password de la request
+        $credentials = $request->only('email', 'password');
+        //Validaciones
+        $validator = Validator::make($credentials, [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6|max:50'
+        ]);
+        //Devolvemos un error de validación en caso de fallo en las verificaciones
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 400);
+        }
+        //Intentamos hacer login
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                //Credenciales incorrectas.
+                return response()->json([
+                    'message' => 'Login failed',
+                ], 401);
+            }
+        } catch (JWTException $e) {
+            //Error chungo
+            return response()->json([
+                'message' => 'Error',
+            ], 500);
+        }
+        //Devolvemos el token necesario para arduino
+        return response()->json([
+            $token,
+        ]);
+    }
     //Función que utilizaremos para eliminar el token y desconectar al usuario
     public function logout(Request $request)
     {

@@ -19,10 +19,10 @@ class CreateDetalleHabitacionesTable extends Migration
             $table->foreign('habitacion_fk')->references('id')->on('habitaciones');
             $table->unsignedBigInteger('detalle_fk');
             $table->foreign('detalle_fk')->references('id')->on('detalles');
-            $table->string('columna_1')->nullable();
-            $table->string('columna_2')->nullable();
-            $table->string('columna_3')->nullable();
-            $table->string('columna_4')->nullable();
+            $table->string('columna_1');
+            $table->string('columna_2');
+            $table->string('columna_3');
+            $table->string('columna_4');
             $table->timestamps();
         });
     }

@@ -21,10 +21,10 @@ class CreateDetallesTable extends Migration
             $table->foreign('dueno_fk')->references('id')->on('duenos');
             $table->unsignedBigInteger('invitado_fk');
             $table->foreign('invitado_fk')->references('id')->on('duenos');
-            $table->string('columna_1')->nullable();
-            $table->string('columna_2')->nullable();
-            $table->string('columna_3')->nullable();
-            $table->string('columna_4')->nullable();
+            $table->string('columna_1');
+            $table->string('columna_2');
+            $table->string('columna_3');
+            $table->string('columna_4');
             $table->timestamps();
         });
     }

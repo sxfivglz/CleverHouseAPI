@@ -19,10 +19,10 @@ class CreateDetalleSensoresTable extends Migration
             $table->foreign('sensor_fk')->references('id')->on('sensores');
             $table->unsignedBigInteger('detalle_habitacion_fk');
             $table->foreign('detalle_habitacion_fk')->references('id')->on('detalle_habitaciones');
-            $table->string('columna_1')->nullable();
-            $table->string('columna_2')->nullable();
-            $table->string('columna_3')->nullable();
-            $table->string('columna_4')->nullable();
+            $table->string('columna_1');
+            $table->string('columna_2');
+            $table->string('columna_3');
+            $table->string('columna_4');
             $table->timestamps();
         });
     }
