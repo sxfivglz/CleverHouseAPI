@@ -44,7 +44,6 @@ Route::delete('/EliminarHabitacion/{hab}/{nombre}',[AdafruitController::class,'e
 //Route::post('/CrearCasa/{nombre}',[AdafruitController::class,'crearCasa']);
 Route::post('/nomFeed/{nombre}',[AdafruitController::class,'feedId']);
 
-
 Route::prefix('user/')->group(function () {
     Route::post('login', [AuthController::class, 'authenticate']);
     Route::post('datosUsuario', [AuthController::class, 'datosUsuario']);

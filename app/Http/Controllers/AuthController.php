@@ -108,9 +108,17 @@ class AuthController extends Controller
                 'message' => 'Error',
             ], 500);
         }
+        $nomUsuario = Auth::user()->nombre_usuario;
+        $apeUsuario = Auth::user()->apellido_usuario;
+        $email=Auth::user()->email;
+        $telefono=Auth::user()->telefono;
+
         //Devolvemos el token
         return response()->json([
-            'user' => Auth::user()
+            'nombre_usuario'=>$nomUsuario,
+            'apellido_usuario'=>$apeUsuario,
+            'email'=>$email,
+            'telefono'=>$telefono,
         ]);
     }
     //para el arduino

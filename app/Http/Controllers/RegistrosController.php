@@ -144,7 +144,7 @@ class RegistrosController extends Controller
         }
         //Buscamos el Registro
         $Registro = Registro::findOrfail($id);
-        //Actualizamos el Registroso.
+        //Actualizamos el Registros.
         $Registro->update([
             'medicion' => $request->medicion,
             'detalle_sensor_fk'=>$request->detalle_sensor_fk,
