@@ -27,6 +27,17 @@ class AdafruitController extends Controller
         $obj=$response->object();
         return $obj;
     }
+    //para la comparacion
+    public function dato_keypad($feed){
+        $nomFeed=self::feedId($feed);
+        //http client documentacion laravel
+        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/".$nomFeed."/data/last/";
+        $response=Http::get($url,[
+            'X-AIO-Key'=>env('ADAFRUIT_KEY'),
+        ]);
+        $obj=$response->object();
+        return $obj->value;
+    }
 
     //para el on/off
     public function cambiarLed($feed){

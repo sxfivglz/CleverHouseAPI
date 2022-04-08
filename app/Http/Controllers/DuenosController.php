@@ -9,6 +9,7 @@ use JWTAuth;
 use App\Http\Controllers\AdafruitController;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class DuenosController extends Controller
 {
@@ -132,10 +133,19 @@ class DuenosController extends Controller
     public function comparacion(Request $request)
     {
         $objeto = new AdafruitController();
-        $myVariable = $objeto->ultimo_data($request->feed);
-        $query="SELECT * FROM duenos where nombre_usuario".$request->nombre_usuario."";
-        return response()->json([
-            'message' => 'Dueño eliminado'
-        ], Response::HTTP_OK);
+        $clave_ada = $objeto->dato_keypad($request->feed_key);
+        $q="SELECT
+        d.columna_1 AS clave
+      FROM duenos AS d 
+      INNER JOIN users AS us
+        ON d.usuario_fk = us.id
+        where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        $clave_base = DB::select($q);
+        $clave_bd =$clave_base[0];
+        if($clave_bd->clave = $clave_ada){
+            $ada=$objeto->cambiarLed($request->feed_entrada);
+            return 'entrada autorizada';
+        }
+        
     }
 }
