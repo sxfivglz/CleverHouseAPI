@@ -39,26 +39,27 @@ class DetallesController extends Controller
     public function store(Request $request)
     {
         //Validamos los datos
-        $data = $request->only('casa_fk');
+        $data = $request->only('casa_fk','dueno_fk');
         $validator = Validator::make($data, [
             'casa_fk' => 'required|string',
+            'dueno_fk' => 'string',
         ]);
         //Si falla la validación
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
         }
         $q="SELECT
-        d.nombre_dueno AS nombreDueno
+        d.id AS IdDueno
       FROM duenos AS d 
       INNER JOIN users AS us
         ON d.usuario_fk = us.id
         where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
         $idUser = DB::select($q);
-
+        $idU =$idUser[0];
         //Creamos el Detalle en la BD
         $val = Detalle::create([
             'casa_fk' => $request->casa_fk,
-            'dueno_fk'=>$idUser
+            'dueno_fk'=>$idU->IdDueno,
         ]);
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
