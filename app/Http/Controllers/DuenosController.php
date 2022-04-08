@@ -49,11 +49,18 @@ class DuenosController extends Controller
         //Si falla la validación
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
-        }
+        }$q="SELECT
+        d.id AS IdDueno
+      FROM duenos AS d 
+      INNER JOIN users AS us
+        ON d.usuario_fk = us.id
+        where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        $idUser = DB::select($q);
+        $idU =$idUser[0];
         //Creamos el duenoo en la BD
         $val = Dueno::create([
             'nombre_dueno' => $request->nombre_dueno,
-            'usuario_fk'=>$request->usuario_fk,
+            'usuario_fk'=>$idU->IdDueno,
             'columna_1'=>$request->columna_1,
         ]);
         //Respuesta en caso de que todo vaya bien.
