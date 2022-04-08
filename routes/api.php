@@ -57,6 +57,7 @@ Route::prefix('user/')->group(function () {
         Route::post('get-user', [AuthController::class, 'getUser']);
     });
 });
+Route::group(['middleware' => ['jwt.verify']], function() {
     Route::prefix('reg')->group(function () {
         Route::get('/listar', [RegistrosController::class, 'index']);//estos son datas
         Route::post('/insertarLectura', [RegistrosController::class, 'storeRead']);
@@ -121,6 +122,7 @@ Route::prefix('user/')->group(function () {
         Route::post('/insertar', [DetalleHabitacionesController::class, 'store']);
         Route::get('/buscar/{id}', [DetalleHabitacionesController::class, 'show']);
     });
+});
     //Route::get('/listar', [ProveedoresController::class, 'index']);
     //Route::post('/insertar', [ProveedoresController::class, 'store']);
     //Route::get('/buscar/{id}', [ProveedoresController::class, 'show']);
