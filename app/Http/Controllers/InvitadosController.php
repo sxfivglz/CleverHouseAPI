@@ -42,16 +42,25 @@ class InvitadosController extends Controller
         $data = $request->only('nombre_invitado','usuario_fk');
         $validator = Validator::make($data, [
             'nombre_invitado' => 'required|max:50|string',
-            'usuario_fk'=>'required|string',
+            'usuario_fk'=>'string',
         ]);
         //Si falla la validación
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
         }
+        $q="SELECT
+        i.id AS IdInv
+      FROM invitados AS i 
+      INNER JOIN users AS us
+        ON i.usuario_fk = us.id
+        where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        $idInvitado = DB::select($q);
+        $idInv =$idInvitado[0];
+
         //Creamos el Invitadoo en la BD
         $val = Invitado::create([
             'nombre_invitado' => $request->nombre_invitado,
-            'usuario_fk'=>$request->usuario_fk,
+            'usuario_fk'=>$idInv->IdInv,
         ]);
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
