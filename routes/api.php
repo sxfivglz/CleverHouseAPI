@@ -106,6 +106,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::delete('/borrar/{id}',[DetallesController::class, 'destroy']);
         Route::get('/listar', [DetallesController::class, 'index']);
         Route::post('/insertar', [DetallesController::class, 'store']);
+        Route::post('/insertarInvitado', [CasasController::class, 'storeInv']);//al insertar un invitado en una casa, es necesario mandar llamar esta ruta
         Route::get('/buscar/{id}', [DetallesController::class, 'show']);
     });
     Route::prefix('det_sen')->group(function () {

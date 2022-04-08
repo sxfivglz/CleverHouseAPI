@@ -38,11 +38,35 @@ class DetallesController extends Controller
     public function store(Request $request)
     {
         //Validamos los datos
+        $data = $request->only('casa_fk','dueno_fk');
+        $validator = Validator::make($data, [
+            'casa_fk' => 'required|string',
+            'dueno_fk'=>'required|string',
+        ]);
+        //Si falla la validación
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 400);
+        }
+        //Creamos el Detalleo en la BD
+        $val = Detalle::create([
+            'casa_fk' => $request->casa_fk,
+            'dueno_fk'=>$request->dueno_fk
+        ]);
+        //Respuesta en caso de que todo vaya bien.
+        return response()->json([
+            'message' => 'Detalle registrada',
+            'data' => $val
+        ], Response::HTTP_OK);
+    }
+    
+    public function storeInv(Request $request)
+    {
+        //Validamos los datos
         $data = $request->only('casa_fk','dueno_fk','invitado_fk');
         $validator = Validator::make($data, [
             'casa_fk' => 'required|string',
             'dueno_fk'=>'required|string',
-            'invitado_fk'=>'required|string',
+            'invitado_fk'=>'required|string'
         ]);
         //Si falla la validación
         if ($validator->fails()) {
@@ -52,7 +76,7 @@ class DetallesController extends Controller
         $val = Detalle::create([
             'casa_fk' => $request->casa_fk,
             'dueno_fk'=>$request->dueno_fk,
-            'invitado_fk'=>$request->invitado_fk,
+            'invitado_fk'=>$request->invitado_fk
         ]);
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
