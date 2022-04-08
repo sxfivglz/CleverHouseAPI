@@ -40,6 +40,8 @@ Route::post('/CambiarSensor/{hab}/{nombreSensor}',[AdafruitController::class,'ca
 Route::get('/TotalHab',[AdafruitController::class,'listarHabitaciones']);
 Route::put('/ModificarHabitacion/{nombre_habitacion}/{nuevoNombre}',[AdafruitController::class,'modificarHabitacion']);
 Route::delete('/EliminarHabitacion/{hab}/{nombre}',[AdafruitController::class,'eliminarHabitacion']);
+Route::get('/keypad/{feed}',[AdafruitController::class,'dato_keypad']);
+
 //Casas
 //Route::post('/CrearCasa/{nombre}',[AdafruitController::class,'crearCasa']);
 Route::post('/nomFeed/{nombre}',[AdafruitController::class,'feedId']);
@@ -66,6 +68,7 @@ Route::prefix('user/')->group(function () {
         Route::delete('/borrar/{id}',[CasasController::class, 'destroy']);
         Route::get('/listar', [CasasController::class, 'index']);
         Route::post('/insertar', [CasasController::class, 'store']);
+        Route::post('/casasUsuario', [CasasController::class, 'consultaCasa']);
         Route::get('/buscar/{id}', [CasasController::class, 'show']);
     });
     Route::prefix('hab')->group(function () {
@@ -87,6 +90,7 @@ Route::prefix('user/')->group(function () {
         Route::delete('/borrar/{id}',[DuenosController::class, 'destroy']);
         Route::get('/listar', [DuenosController::class, 'index']);
         Route::post('/insertar', [DuenosController::class, 'store']);
+        Route::post('/entrada', [DuenosController::class, 'comparacion']);
         Route::get('/buscar/{id}', [DuenosController::class, 'show']);
     });
     Route::prefix('inv')->group(function () {

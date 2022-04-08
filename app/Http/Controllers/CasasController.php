@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class CasasController extends Controller
 {
@@ -127,5 +128,21 @@ class CasasController extends Controller
         return response()->json([
             'message' => 'Casa eliminada'
         ], Response::HTTP_OK);
+    }
+    public function consultaCasa(Request $request)
+    {
+        $q="SELECT
+        d.casa_fk 
+      FROM detalles AS d 
+      INNER JOIN duenos AS du
+        ON d.casa_fk = du.id
+      INNER JOIN users AS us
+      ON du.id = us.id
+        where casa_fk=(
+        SELECT id FROM users WHERE email='".$request->email."');";
+        $clave_base = DB::select($q);
+        
+        return $clave_base;
+        
     }
 }
