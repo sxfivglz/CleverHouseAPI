@@ -39,10 +39,9 @@ class DetallesController extends Controller
     public function store(Request $request)
     {
         //Validamos los datos
-        $data = $request->only('casa_fk','dueno_fk');
+        $data = $request->only('casa_fk');
         $validator = Validator::make($data, [
             'casa_fk' => 'required|string',
-            'dueno_fk'=>'required|string',
         ]);
         //Si falla la validación
         if ($validator->fails()) {
