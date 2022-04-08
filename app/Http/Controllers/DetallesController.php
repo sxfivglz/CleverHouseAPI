@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class DetallesController extends Controller
 {
@@ -47,10 +48,18 @@ class DetallesController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
         }
-        //Creamos el Detalleo en la BD
+        $q="SELECT
+        d.nombre_dueno AS nombreDueno
+      FROM duenos AS d 
+      INNER JOIN users AS us
+        ON d.usuario_fk = us.id
+        where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        $idUser = DB::select($q);
+
+        //Creamos el Detalle en la BD
         $val = Detalle::create([
             'casa_fk' => $request->casa_fk,
-            'dueno_fk'=>$request->dueno_fk
+            'dueno_fk'=>$idUser
         ]);
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
