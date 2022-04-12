@@ -42,25 +42,22 @@ class DuenosController extends Controller
         //Validamos los datos
         $data = $request->only('nombre_dueno','usuario_fk','columna_1');
         $validator = Validator::make($data, [
-            'nombre_dueno' => 'required|max:50|string',
-            'usuario_fk'=>'required|string',
+            'nombre_dueno' => 'max:50|string',
+            'usuario_fk'=>'string',
             'columna_1'=>'required|string',
         ]);
         //Si falla la validación
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
-        }$q="SELECT
-        d.id AS IdDueno
-      FROM duenos AS d 
-      INNER JOIN users AS us
-        ON d.usuario_fk = us.id
-        where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        }
+        //esta query es para las casas
+        $q="SELECT id FROM users WHERE email='".$request->email."';";
         $idUser = DB::select($q);
         $idU =$idUser[0];
         //Creamos el duenoo en la BD
         $val = Dueno::create([
             'nombre_dueno' => $request->nombre_dueno,
-            'usuario_fk'=>$idU->IdDueno,
+            'usuario_fk'=>$idU->id,
             'columna_1'=>$request->columna_1,
         ]);
         //Respuesta en caso de que todo vaya bien.
@@ -95,24 +92,30 @@ class DuenosController extends Controller
      * @param  \App\Models\dueno  $dueno
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //Validación de datos
-        $data = $request->only('nombre_dueno','usuario_fk');
+        $data = $request->only('nombre_dueno');
         $validator = Validator::make($data, [
             'nombre_dueno' => 'required|max:50|string',
-            'usuario_fk'=>'required|string',
         ]);
         //Si falla la validación error.
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
         }
-        //Buscamos el duenoo
-        $dueno = Dueno::findOrfail($id);
-        //Actualizamos el duenoo.
+        //Buscamos el dueno
+        $q="SELECT
+        d.id AS IdDueno
+      FROM duenos AS d 
+      INNER JOIN users AS us
+        ON d.usuario_fk = us.id
+        where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        $idUser = DB::select($q);
+        $idU =$idUser[0];
+        $dueno = Dueno::findOrfail($idU->IdDueno);
+        //Actualizamos el duenoo
         $dueno->update([
             'nombre_dueno' => $request->nombre_dueno,
-            'usuario_fk'=>$request->usuario_fk,
         ]);
         //Devolvemos los datos actualizados.
         return response()->json([
@@ -126,10 +129,18 @@ class DuenosController extends Controller
      * @param  \App\Models\dueno  $dueno
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //Buscamos el duenoo
-        $dueno = Dueno::findOrfail($id);
+        $q="SELECT
+        d.id AS IdDueno
+      FROM duenos AS d 
+      INNER JOIN users AS us
+        ON d.usuario_fk = us.id
+        where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        $idUser = DB::select($q);
+        $idU =$idUser[0];
+        $dueno = Dueno::findOrfail($idU->IdDueno);
         //Eliminamos el duenoo
         $dueno->delete();
         //Devolvemos la respuesta

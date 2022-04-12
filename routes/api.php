@@ -87,16 +87,16 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::get('/buscar/{id}', [SensoresController::class, 'show']);
     });
     Route::prefix('duenos')->group(function () {
-        Route::put('/modificar/{id}', [DuenosController::class, 'update']);
-        Route::delete('/borrar/{id}',[DuenosController::class, 'destroy']);
+        Route::put('/modificar', [DuenosController::class, 'update']);
+        Route::delete('/borrar',[DuenosController::class, 'destroy']);
         Route::get('/listar', [DuenosController::class, 'index']);
         Route::post('/insertar', [DuenosController::class, 'store']);
         Route::post('/entrada', [DuenosController::class, 'comparacion']);
         Route::get('/buscar/{id}', [DuenosController::class, 'show']);
     });
     Route::prefix('inv')->group(function () {
-        Route::put('/modificar/{id}', [InvitadosController::class, 'update']);
-        Route::delete('/borrar/{id}',[InvitadosController::class, 'destroy']);
+        Route::put('/modificar', [InvitadosController::class, 'update']);
+        Route::delete('/borrar',[InvitadosController::class, 'destroy']);
         Route::get('/listar', [InvitadosController::class, 'index']);
         Route::post('/insertar', [InvitadosController::class, 'store']);
         Route::get('/buscar/{id}', [InvitadosController::class, 'show']);

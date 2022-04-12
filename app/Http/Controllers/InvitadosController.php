@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class InvitadosController extends Controller
 {
@@ -48,19 +49,13 @@ class InvitadosController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
         }
-        $q="SELECT
-        i.id AS IdInv
-      FROM invitados AS i 
-      INNER JOIN users AS us
-        ON i.usuario_fk = us.id
-        where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
-        $idInvitado = DB::select($q);
-        $idInv =$idInvitado[0];
-
+        $q="SELECT id FROM users WHERE email='".$request->email."';";
+        $idUser = DB::select($q);
+        $idU =$idUser[0];
         //Creamos el Invitadoo en la BD
         $val = Invitado::create([
             'nombre_invitado' => $request->nombre_invitado,
-            'usuario_fk'=>$idInv->IdInv,
+            'usuario_fk'=>$idU->id,
         ]);
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
@@ -94,24 +89,30 @@ class InvitadosController extends Controller
      * @param  \App\Models\Invitado  $Invitado
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //Validación de datos
-        $data = $request->only('nombre_invitado','usuario_fk');
+        $data = $request->only('nombre_invitado');
         $validator = Validator::make($data, [
             'nombre_invitado' => 'required|max:50|string',
-            'usuario_fk'=>'required|string',
         ]);
         //Si falla la validación error.
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
         }
-        //Buscamos el Invitadoo
-        $Invitado = Invitado::findOrfail($id);
-        //Actualizamos el Invitadoo.
+        //Buscamos el Invitado
+        $q=" SELECT
+        i.id AS IdInvitado
+      FROM invitados AS i 
+      INNER JOIN users AS us
+        ON i.usuario_fk = us.id
+        where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        $idUser = DB::select($q);
+        $idU =$idUser[0];
+        $Invitado = Invitado::findOrfail($idU->IdInvitado);
+        //Actualizamos el Invitado.
         $Invitado->update([
             'nombre_invitado' => $request->nombre_invitado,
-            'usuario_fk'=>$request->usuario_fk,
         ]);
         //Devolvemos los datos actualizados.
         return response()->json([
@@ -125,10 +126,18 @@ class InvitadosController extends Controller
      * @param  \App\Models\Invitado  $Invitado
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //Buscamos el Invitadoo
-        $Invitado = Invitado::findOrfail($id);
+        //Buscamos el Invitado
+        $q=" SELECT
+        i.id AS IdInvitado
+      FROM invitados AS i 
+      INNER JOIN users AS us
+        ON i.usuario_fk = us.id
+        where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        $idUser = DB::select($q);
+        $idU =$idUser[0];
+        $Invitado = Invitado::findOrfail($idU->IdInvitado);
         //Eliminamos el Invitadoo
         $Invitado->delete();
         //Devolvemos la respuesta
