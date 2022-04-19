@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class DetalleHabitacionesController extends Controller
 {

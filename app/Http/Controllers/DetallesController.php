@@ -73,24 +73,46 @@ class DetallesController extends Controller
         //Validamos los datos
         $data = $request->only('casa_fk','dueno_fk','invitado_fk');
         $validator = Validator::make($data, [
-            'casa_fk' => 'required|string',
-            'dueno_fk'=>'required|string',
-            'invitado_fk'=>'required|string'
+            'casa_fk' => 'string',
+            'dueno_fk'=>'string',
+            'invitado_fk'=>'string'
         ]);
         //Si falla la validación
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
         }
-        //Creamos el Detalleo en la BD
-        $val = Detalle::create([
-            'casa_fk' => $request->casa_fk,
-            'dueno_fk'=>$request->dueno_fk,
-            'invitado_fk'=>$request->invitado_fk
-        ]);
+        $q="SELECT
+        d.id AS IdDueno
+      FROM duenos AS d 
+      INNER JOIN users AS us
+        ON d.usuario_fk = us.id
+        where usuario_fk=(SELECT id FROM users WHERE email='".$request->emailDueno."');";
+        $idUser = DB::select($q);
+        $idU =$idUser[0];
+
+        $q2=" SELECT
+        i.id AS IdInvitado
+      FROM invitados AS i 
+      INNER JOIN users AS us
+        ON i.usuario_fk = us.id
+        where usuario_fk=(SELECT id FROM users WHERE email='".$request->emailInvitado."');";
+        $idUserI = DB::select($q2);
+        $idUs =$idUserI[0];
+
+        $q3="SELECT id FROM casas WHERE nombre_casa='".$request->nombre_casa."';";
+        $idCasa = DB::select($q3);
+        $idC =$idCasa[0];
+        //Creamos el Detalle en la BD
+        $qUpdate=" UPDATE detalles
+        SET invitado_fk =".$idUs->IdInvitado."
+        WHERE casa_fk=".$idC->id." AND dueno_fk=".$idU->IdDueno.";";
+        $UPD = DB::select($qUpdate);
+        $qSEL="SELECT * FROM detalles";
+        $SELECT=DB::select($qSEL);
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
             'message' => 'Detalle registrada',
-            'data' => $val
+            'data' => $SELECT
         ], Response::HTTP_OK);
     }
     /**

@@ -41,6 +41,7 @@ Route::get('/TotalHab',[AdafruitController::class,'listarHabitaciones']);
 Route::put('/ModificarHabitacion/{nombre_habitacion}/{nuevoNombre}',[AdafruitController::class,'modificarHabitacion']);
 Route::delete('/EliminarHabitacion/{hab}/{nombre}',[AdafruitController::class,'eliminarHabitacion']);
 Route::get('/keypad/{feed}',[AdafruitController::class,'dato_keypad']);
+Route::get('/historial/{nombre}',[AdafruitController::class,'historico']);
 
 //Casas
 //Route::post('/CrearCasa/{nombre}',[AdafruitController::class,'crearCasa']);
@@ -106,7 +107,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::delete('/borrar/{id}',[DetallesController::class, 'destroy']);
         Route::get('/listar', [DetallesController::class, 'index']);
         Route::post('/insertar', [DetallesController::class, 'store']);
-        Route::post('/insertarInvitado', [CasasController::class, 'storeInv']);//al insertar un invitado en una casa, es necesario mandar llamar esta ruta
+        Route::post('/insertarInvitado', [DetallesController::class, 'storeInv']);//al insertar un invitado en una casa, es necesario mandar llamar esta ruta
         Route::get('/buscar/{id}', [DetallesController::class, 'show']);
     });
     Route::prefix('det_sen')->group(function () {

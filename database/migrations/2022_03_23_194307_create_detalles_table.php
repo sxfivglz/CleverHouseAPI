@@ -20,7 +20,7 @@ class CreateDetallesTable extends Migration
             $table->unsignedBigInteger('dueno_fk');
             $table->foreign('dueno_fk')->references('id')->on('duenos');
             $table->unsignedBigInteger('invitado_fk');
-            $table->foreign('invitado_fk')->references('id')->on('duenos');
+            $table->foreign('invitado_fk')->references('id')->on('invitados');
             $table->string('columna_1');
             $table->string('columna_2');
             $table->string('columna_3');

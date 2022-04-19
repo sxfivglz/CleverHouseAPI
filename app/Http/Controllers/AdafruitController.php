@@ -195,4 +195,13 @@ class AdafruitController extends Controller
         $feedKey = str_replace($searchString, $replaceString, $originalString);
         return $feedKey;
     }
+    public function historico($nombre){
+        $nomFeed=self::feedId($nombre);
+        //$url="https://io.adafruit.com/api/v2/nayelireyes/groups/".$nomFeed."/feeds/";
+        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/".$nomFeed."/data";
+        $response=Http::get($url,[
+            'X-AIO-Key'=>env('ADAFRUIT_KEY')
+        ]);
+        return $response->object();
+    }
 }
