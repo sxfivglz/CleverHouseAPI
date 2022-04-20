@@ -70,7 +70,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::delete('/borrar/{id}',[CasasController::class, 'destroy']);
         Route::get('/listar', [CasasController::class, 'index']);
         Route::post('/insertar', [CasasController::class, 'store']);
-        Route::post('/casasUsuario', [CasasController::class, 'consultaCasa']);
+        //regresa arreglo
+        Route::post('/casasDueno', [CasasController::class, 'consultaCasaDuenos']);
+        Route::post('/casasInvitado', [CasasController::class, 'consultaCasaInvitado']);
         Route::get('/buscar/{id}', [CasasController::class, 'show']);
     });
     Route::prefix('hab')->group(function () {

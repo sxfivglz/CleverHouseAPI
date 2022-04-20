@@ -129,20 +129,38 @@ class CasasController extends Controller
             'message' => 'Casa eliminada'
         ], Response::HTTP_OK);
     }
-    public function consultaCasa(Request $request)
+    //regresa un arreglo
+    public function consultaCasaDuenos(Request $request)
     {
         $q="SELECT
-        d.casa_fk 
+        c.nombre_casa
       FROM detalles AS d 
+      INNER JOIN casas AS c
+        ON d.casa_fk = c.id
       INNER JOIN duenos AS du
-        ON d.casa_fk = du.id
+        ON d.dueno_fk = du.id
       INNER JOIN users AS us
       ON du.id = us.id
-        where casa_fk=(
-        SELECT id FROM users WHERE email='".$request->email."');";
+        where du.usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
         $clave_base = DB::select($q);
         
         return $clave_base;
+    }
+    //regresa un arreglo
+    public function consultaCasaInvitado(Request $request)
+    {
+        $q="SELECT
+        c.nombre_casa
+      FROM detalles AS d 
+      INNER JOIN casas AS c
+        ON d.casa_fk = c.id
+      INNER JOIN invitados AS i
+        ON d.invitado_fk = i.id
+      INNER JOIN users AS us
+      ON i.id = us.id
+        where i.usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        $clave_base = DB::select($q);
         
+        return $clave_base;
     }
 }
