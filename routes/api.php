@@ -118,6 +118,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::get('/listar', [DetalleSensoresController::class, 'index']);
         Route::post('/insertar', [DetalleSensoresController::class, 'store']);
         Route::get('/buscar/{id}', [DetalleSensoresController::class, 'show']);
+        //regresa arreglo
+        Route::post('/SensorCasa', [DetalleSensoresController::class, 'sensoresCasa']);
     });
     Route::prefix('det_hab')->group(function () {
         Route::put('/modificar/{id}', [DetalleHabitacionesController::class, 'update']);

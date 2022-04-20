@@ -139,4 +139,23 @@ class DetalleSensoresController extends Controller
             'message' => 'DetalleSensor eliminado'
         ], Response::HTTP_OK);
     }
+     //regresa un arreglo
+     public function sensoresCasa(Request $request)
+     {
+         $q="SELECT
+         s.nombre_sensor
+       FROM detalle_sensores AS ds 
+       INNER JOIN sensores AS s
+         ON ds.sensor_fk = s.id
+       INNER JOIN detalle_habitaciones AS dh
+         ON ds.detalle_habitacion_fk = dh.id
+       INNER JOIN detalles AS d
+         ON dh.detalle_fk = d.id
+       INNER JOIN casas AS c
+       ON d.casa_fk = c.id
+         where c.nombre_casa='".$request->nombre_casa."';";
+         $clave_base = DB::select($q);
+         
+         return $clave_base;
+     }
 }
