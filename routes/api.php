@@ -38,7 +38,7 @@ Route::post('/SensorHab/{hab}/{nombreSensor}',[AdafruitController::class,'añadi
 Route::post('/CrearHab/{nombre}',[AdafruitController::class,'añadirHab']);
 Route::post('/CambiarSensor/{hab}/{nombreSensor}',[AdafruitController::class,'cambiarSensor']);
 Route::get('/TotalHab',[AdafruitController::class,'listarHabitaciones']);
-Route::put('/ModificarHabitacion/{nombre_habitacion}/{nuevoNombre}',[AdafruitController::class,'modificarHabitacion']);
+Route::put('/ModificarHabitacion/{nombre_habitacion}/{nuevo_nombre}',[AdafruitController::class,'modificarHabitacion']);
 Route::delete('/EliminarHabitacion/{hab}/{nombre}',[AdafruitController::class,'eliminarHabitacion']);
 Route::get('/keypad/{feed}',[AdafruitController::class,'dato_keypad']);
 Route::get('/historial/{nombre}',[AdafruitController::class,'historico']);
@@ -66,8 +66,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::get('/buscar/{id}', [RegistrosController::class, 'show']);
     });
     Route::prefix('casas')->group(function () {
-        Route::put('/modificar/{id}', [CasasController::class, 'update']);
-        Route::delete('/borrar/{id}',[CasasController::class, 'destroy']);
+        Route::put('/modificar', [CasasController::class, 'update']);
+        Route::delete('/borrar',[CasasController::class, 'destroy']);
         Route::get('/listar', [CasasController::class, 'index']);
         Route::post('/insertar', [CasasController::class, 'store']);
         //regresa arreglo
@@ -76,15 +76,15 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::get('/buscar/{id}', [CasasController::class, 'show']);
     });
     Route::prefix('hab')->group(function () {
-        Route::put('/modificar/{id}', [HabitacionesController::class, 'update']);
-        Route::delete('/borrar/{id}',[HabitacionesController::class, 'destroy']);
+        Route::put('/modificar', [HabitacionesController::class, 'update']);
+        Route::delete('/borrar',[HabitacionesController::class, 'destroy']);
         Route::get('/listar', [HabitacionesController::class, 'index']);
         Route::post('/insertar', [HabitacionesController::class, 'store']);//estas son groups
         Route::get('/buscar/{id}', [HabitacionesController::class, 'show']);
     });
     Route::prefix('sen')->group(function () {
-        Route::put('/modificar/{id}', [SensoresController::class, 'update']);
-        Route::delete('/borrar/{id}',[SensoresController::class, 'destroy']);
+        Route::put('/modificar', [SensoresController::class, 'update']);
+        Route::delete('/borrar',[SensoresController::class, 'destroy']);
         Route::get('/listar', [SensoresController::class, 'index']);
         Route::post('/insertar', [SensoresController::class, 'store']);//estos son feeds
         Route::get('/buscar/{id}', [SensoresController::class, 'show']);

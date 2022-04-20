@@ -87,12 +87,13 @@ class CasasController extends Controller
      * @param  \App\Models\Casa  $Casa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //Validación de datos
-        $data = $request->only('nombre_casa','direccion');
+        $data = $request->only('nombre_casa','nuevo_nombre_casa','direccion');
         $validator = Validator::make($data, [
             'nombre_casa' => 'required|max:50|string',
+            'nuevo_nombre_casa' => 'required|max:50|string',
             'direccion'=>'required|string',
         ]);
         //Si falla la validación error.
@@ -100,10 +101,13 @@ class CasasController extends Controller
             return response()->json(['error' => $validator->messages()], 400);
         }
         //Buscamos el Casa
-        $Casa = Casa::findOrfail($id);
+        $q2="SELECT id FROM casas WHERE nombre_casa='".$request->nombre_casa."';";
+        $idCasa = DB::select($q2);
+        $idC =$idCasa[0];
+        $Casa = Casa::findOrfail($idC->id);
         //Actualizamos el Casa.
         $Casa->update([
-            'nombre_casa' => $request->nombre_casa,
+            'nombre_casa' => $request->nuevo_nombre_casa,
             'direccion'=>$request->direccion,
         ]);
         //Devolvemos los datos actualizados.
@@ -118,10 +122,13 @@ class CasasController extends Controller
      * @param  \App\Models\Casa  $Casa
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //Buscamos el Casa
-        $Casa = Casa::findOrfail($id);
+        $q2="SELECT id FROM casas WHERE nombre_casa='".$request->nombre_casa."';";
+        $idCasa = DB::select($q2);
+        $idC =$idCasa[0];
+        $Casa = Casa::findOrfail($idC->id);
         //Eliminamos el Casa
         $Casa->delete();
         //Devolvemos la respuesta

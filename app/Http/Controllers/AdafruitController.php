@@ -191,9 +191,24 @@ class AdafruitController extends Controller
         $searchString = " ";
         $replaceString = "";
         $originalString = $feed; 
- 
         $feedKey = str_replace($searchString, $replaceString, $originalString);
-        return $feedKey;
+        
+        $searchString = "ñ";
+        $replaceString = "n";
+        $originalString = $feedKey;
+        $feedKey1 = str_replace($searchString, $replaceString, $originalString);
+
+        $searchString = "ó";
+        $replaceString = "o";
+        $originalString = $feedKey1;
+        $feedKey2 = str_replace($searchString, $replaceString, $originalString);
+
+        $searchString = "á";
+        $replaceString = "a";
+        $originalString = $feedKey2;
+        $feedKey3 = str_replace($searchString, $replaceString, $originalString);
+        
+        return $feedKey3;
     }
     public function historico($nombre){
         $nomFeed=self::feedId($nombre);

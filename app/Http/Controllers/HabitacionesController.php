@@ -9,7 +9,7 @@ use JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\AdafruitController;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class HabitacionesController extends Controller
 {
@@ -91,47 +91,54 @@ class HabitacionesController extends Controller
      */
 
      //necesita el nombre de la habitacion en la que se encuentra de android, ademas del nuevo nombre
-    public function update(Request $request,$id)
-    {
-        //Insertamos en adafruit
-        $objeto = new AdafruitController();
-        $myVariable = $objeto->modificarHabitacion($request->nombre_ada,$request->nuevoNombre);
-        //Validación de datos
-        $data = $request->only('nombre_habitacion');
-        $validator = Validator::make($data, [
-            'nombre_habitacion' => 'required|string',
-        ]);
-        //Si falla la validación error.
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 400);
-        }
-        //Buscamos el Habitaciono
-        $Habitacion = Habitacion::findOrfail($id);
-        //Actualizamos el Habitaciono.
-        $Habitacion->update([
-            'nombre_habitacion' => $request->nombre_habitacion,
-        ]);
-        //Devolvemos los datos actualizados.
-        return response()->json([
-            'message' => 'Habitacion actualizado',
-            'data' => $Habitacion,
-            'ada'=>$myVariable
-        ], Response::HTTP_CREATED);
-    }
+     public function update(Request $request)
+     {
+         //Insertamos en adafruit
+         $objeto = new AdafruitController();
+         $myVariable = $objeto->modificarHabitacion($request->nombre_anterior,$request->nuevo_nombre);
+         //Validación de datos
+         $data = $request->only('nombre_anterior','nuevo_nombre');
+         $validator = Validator::make($data, [
+             'nombre_anterior' => 'required|string',
+             'nuevo_nombre'=>'required|string',
+         ]);
+         //Si falla la validación error.
+         if ($validator->fails()) {
+             return response()->json(['error' => $validator->messages()], 400);
+         }
+         //Buscamos el Habitacion
+         $q="SELECT id FROM habitaciones WHERE nombre_habitacion='".$request->nombre_anterior."';";
+         $idCasa = DB::select($q);
+         $idC =$idCasa[0];
+         $Habitacion = Habitacion::findOrfail($idC->id);
+         //Actualizamos el Habitacion.
+         $Habitacion->update([
+             'nombre_habitacion' => $request->nuevo_nombre,
+         ]);
+         //Devolvemos los datos actualizados.
+         return response()->json([
+             'message' => 'Habitacion actualizado',
+             'data' => $Habitacion,
+             'ada'=>$myVariable
+         ], Response::HTTP_CREATED);
+     }
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Habitacion  $Habitacion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request)
     {
         //Eliminamos en adafruit
         $objeto = new AdafruitController();
-        $myVariable = $objeto->eliminarHabitacion($request->nombre);
-        //Buscamos el Habitaciono
-        $Habitacion = Habitacion::findOrfail($id);
-        //Eliminamos el Habitaciono
+        $myVariable = $objeto->eliminarHabitacion($request->nombre_habitacion);
+        //Buscamos el Habitacion
+        $q="SELECT id FROM habitaciones WHERE nombre_habitacion='".$request->nombre_habitacion."';";
+        $idCasa = DB::select($q);
+        $idC =$idCasa[0];
+        $Habitacion = Habitacion::findOrfail($idC->id);
+        //Eliminamos el Habitacion
         $Habitacion->delete();
         //Devolvemos la respuesta
         return response()->json([
@@ -139,5 +146,4 @@ class HabitacionesController extends Controller
             'ada' => $myVariable,
         ], Response::HTTP_OK);
     }
-    
 }

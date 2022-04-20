@@ -87,7 +87,7 @@ class SensoresController extends Controller
      * @param  \App\Models\Sensor  $Sensor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //Insertamos en adafruit
         $objeto = new AdafruitController();
@@ -102,7 +102,10 @@ class SensoresController extends Controller
             return response()->json(['error' => $validator->messages()], 400);
         }
         //Buscamos el Sensor
-        $Sensor = Sensor::findOrfail($id);
+        $q2="SELECT id FROM sensores WHERE nombre_sensor='".$request->nombre."';";
+        $idSen = DB::select($q2);
+        $idS =$idSen[0];
+        $Sensor = Sensor::findOrfail($idS->id);
         //Actualizamos el Sensoro.
         $Sensor->update([
             'nombre_sensor' => $request->nombre_sensor,
@@ -120,13 +123,16 @@ class SensoresController extends Controller
      * @param  \App\Models\Sensor  $Sensor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request)
     {
         //Eliminamos en adafruit
         $objeto = new AdafruitController();
         $myVariable = $objeto->eliminarSensor($request->habitacion,$request->nombre);
         //Buscamos el Sensor
-        $Sensor = Sensor::findOrfail($id);
+        $q2="SELECT id FROM sensores WHERE nombre_sensor='".$request->nombre."';";
+        $idSen = DB::select($q2);
+        $idS =$idSen[0];
+        $Sensor = Sensor::findOrfail($idS->id);
         //Eliminamos el Sensor
         $Sensor->delete();
         //Devolvemos la respuesta
