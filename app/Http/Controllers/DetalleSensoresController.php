@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class DetalleSensoresController extends Controller
 {
@@ -38,19 +39,31 @@ class DetalleSensoresController extends Controller
     public function store(Request $request)
     {
         //Validamos los datos
-        $data = $request->only('sensor_fk','detalle_habitacion_fk');
+        $data = $request->only('nombre_sensor','nombre_habitacion');
         $validator = Validator::make($data, [
-            'sensor_fk' => 'required|string',
-            'detalle_habitacion_fk'=>'required|string',
+            'nombre_sensor' => 'required|string',
+            'nombre_habitacion'=>'required|string',
         ]);
         //Si falla la validación
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
         }
-        //Creamos el DetalleSensoro en la BD
+        $q="SELECT
+        dh.id 
+        FROM detalle_habitaciones AS dh 
+        INNER JOIN habitaciones AS h
+          ON dh.habitacion_fk = h.id
+          where h.nombre_habitacion='".$request->nombre_habitacion."';";
+        $idHab = DB::select($q);
+        $idH =$idHab[0];
+
+        $q2="SELECT id FROM sensores WHERE nombre_sensor='".$request->nombre_sensor."';";
+        $idSen = DB::select($q2);
+        $idS =$idSen[0];
+        //Creamos el DetalleSensor en la BD
         $val = DetalleSensor::create([
-            'sensor_fk' => $request->sensor_fk,
-            'detalle_habitacion_fk'=>$request->detalle_habitacion_fk,
+            'sensor_fk' => $idS->id,
+            'detalle_habitacion_fk'=>$idH->id,
         ]);
         //Respuesta en caso de que todo vaya bien.
         return response()->json([

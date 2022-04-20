@@ -39,19 +39,30 @@ class DetalleHabitacionesController extends Controller
     public function store(Request $request)
     {
         //Validamos los datos
-        $data = $request->only('habitacion_fk','detalle_fk');
+        $data = $request->only('nombre_habitacion','nombre_casa');
         $validator = Validator::make($data, [
-            'habitacion_fk' => 'required|string',
-            'detalle_fk'=>'required|string',
+            'nombre_habitacion' => 'required|string',
+            'nombre_casa'=>'required|string',
         ]);
         //Si falla la validación
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 400);
         }
+        $q="SELECT id from habitaciones where nombre_habitacion='".$request->nombre_habitacion."';";
+        $idHab = DB::select($q);
+        $idH =$idHab[0];
+        $q1="SELECT
+            d.id
+        FROM detalles AS d 
+        INNER JOIN casas AS c
+        ON d.casa_fk = c.id
+        WHERE c.nombre_casa='".$request->nombre_casa."';";
+        $idDet = DB::select($q1);
+        $idD =$idDet[0];
         //Creamos el DetalleHabitaciono en la BD
         $val = DetalleHabitacion::create([
-            'habitacion_fk' => $request->habitacion_fk,
-            'detalle_fk'=>$request->detalle_fk,
+            'habitacion_fk' => $idH->id,
+            'detalle_fk'=>$idD->id,
         ]);
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
