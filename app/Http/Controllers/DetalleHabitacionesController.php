@@ -139,4 +139,20 @@ class DetalleHabitacionesController extends Controller
             'message' => 'DetalleHabitacion eliminada'
         ], Response::HTTP_OK);
     }
+    public function habitacionesCasa(Request $request)
+    {
+        $q="SELECT
+        h.nombre_habitacion
+      FROM detalle_habitaciones AS dh 
+      INNER JOIN habitaciones AS h
+      ON dh.habitacion_fk = h.id
+      INNER JOIN detalles AS d
+      ON dh.detalle_fk = d.id
+      INNER JOIN casas AS c
+      ON d.casa_fk = c.id
+      where c.nombre_casa='".$request->nombre_casa."';";
+        $clave_base = DB::select($q);
+        
+        return $clave_base;
+    }
 }

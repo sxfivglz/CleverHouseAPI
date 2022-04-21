@@ -158,4 +158,21 @@ class DetalleSensoresController extends Controller
          
          return $clave_base;
      }
+      //regresa un arreglo
+      public function sensoresHabitaciones(Request $request)
+      {
+          $q="SELECT
+          s.nombre_sensor
+        FROM detalle_sensores AS ds 
+        INNER JOIN detalle_habitaciones AS dh
+        ON ds.detalle_habitacion_fk = dh.id
+        INNER JOIN habitaciones AS h
+        ON dh.habitacion_fk = h.id
+        INNER JOIN sensores AS s
+        ON ds.sensor_fk = s.id
+        where h.nombre_habitacion='".$request->nombre_habitacion."';";
+          $clave_base = DB::select($q);
+          
+          return $clave_base;
+      }
 }

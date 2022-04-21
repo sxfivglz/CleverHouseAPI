@@ -120,6 +120,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::get('/buscar/{id}', [DetalleSensoresController::class, 'show']);
         //regresa arreglo
         Route::post('/SensorCasa', [DetalleSensoresController::class, 'sensoresCasa']);
+        Route::post('/SensorHabitacion', [DetalleSensoresController::class, 'sensoresHabitaciones']);
     });
     Route::prefix('det_hab')->group(function () {
         Route::put('/modificar/{id}', [DetalleHabitacionesController::class, 'update']);
@@ -127,6 +128,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::get('/listar', [DetalleHabitacionesController::class, 'index']);
         Route::post('/insertar', [DetalleHabitacionesController::class, 'store']);
         Route::get('/buscar/{id}', [DetalleHabitacionesController::class, 'show']);
+        Route::post('/habitacionesCasa', [DetalleSensoresController::class, 'habitacionesCasa']);
     });
 });
     //Route::get('/listar', [ProveedoresController::class, 'index']);
