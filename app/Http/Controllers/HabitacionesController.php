@@ -65,9 +65,11 @@ class HabitacionesController extends Controller
     }
     public function storeArray(Request $request)
     {
-        $array = $request->nombre_habitacion;
-        //Creamos el Habitaciono en la BD
+        $array = $request->toArray();
+        //$decoded=json_decode($array,true);
+        $i=0;
         foreach($array as $arr){
+        //Creamos el Habitacion en la BD
             $val = Habitacion::create([
             'nombre_habitacion' => $arr['nombre_habitacion'],
         ]);
