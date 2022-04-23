@@ -9,6 +9,7 @@ use JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast\Array_;
 
 class DetalleSensoresController extends Controller
 {
@@ -161,7 +162,8 @@ class DetalleSensoresController extends Controller
       //regresa un arreglo
       public function sensoresHabitaciones(Request $request)
       {
-          $q="SELECT
+          $array = $request->toArray();
+          $q="SELECT  
           s.id,s.nombre_sensor
         FROM detalle_sensores AS ds 
         INNER JOIN detalle_habitaciones AS dh
@@ -170,9 +172,10 @@ class DetalleSensoresController extends Controller
         ON dh.habitacion_fk = h.id
         INNER JOIN sensores AS s
         ON ds.sensor_fk = s.id
-        where h.nombre_habitacion='".$request->nombre_habitacion."';";
+        where h.nombre_habitacion='".$array['nombre_habitacion']."';";
           $clave_base = DB::select($q);
           
           return $clave_base;
       }
 }
+
