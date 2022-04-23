@@ -162,7 +162,7 @@ class DetalleSensoresController extends Controller
       public function sensoresHabitaciones(Request $request)
       {
           $q="SELECT
-          s.nombre_sensor
+          s.id,s.nombre_sensor
         FROM detalle_sensores AS ds 
         INNER JOIN detalle_habitaciones AS dh
         ON ds.detalle_habitacion_fk = dh.id
