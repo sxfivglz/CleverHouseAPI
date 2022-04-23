@@ -121,7 +121,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::get('/buscar/{id}', [DetalleSensoresController::class, 'show']);
         //regresa arreglo
         Route::post('/SensorCasa', [DetalleSensoresController::class, 'sensoresCasa']);
-        Route::get('/SensorHabitacion', [DetalleSensoresController::class, 'sensoresHabitaciones']);
+        Route::post'/SensorHabitacion', [DetalleSensoresController::class, 'sensoresHabitaciones']);
     });
     Route::prefix('det_hab')->group(function () {
         Route::put('/modificar/{id}', [DetalleHabitacionesController::class, 'update']);
