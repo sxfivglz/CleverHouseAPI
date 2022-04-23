@@ -63,6 +63,26 @@ class HabitacionesController extends Controller
             'ada'=>$myVariable
         ], Response::HTTP_OK);
     }
+    public function storeArray(Request $request)
+    {
+        $array = $request->toArray();
+        //$decoded=json_decode($array,true);
+        $i=0;
+        foreach($array as $arr){
+        //Creamos el Habitacion en la BD
+            $val = Habitacion::create([
+            'nombre_habitacion' => $arr['nombre_habitacion'],
+        ]);
+        //Insertamos en adafruit
+        $objeto = new AdafruitController();
+        $myVariable = $objeto->añadirHab($arr['nombre_habitacion']);
+        }
+        //Respuesta en caso de que todo vaya bien.
+        return response()->json([
+            'message' => 'Habitaciones registradas',
+            'ada'=>$myVariable
+        ], Response::HTTP_OK);
+    }
     /**
      * Display the specified resource.
      *

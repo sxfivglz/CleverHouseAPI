@@ -80,6 +80,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::delete('/borrar',[HabitacionesController::class, 'destroy']);
         Route::get('/listar', [HabitacionesController::class, 'index']);
         Route::post('/insertar', [HabitacionesController::class, 'store']);//estas son groups
+        Route::post('/insertarArray', [HabitacionesController::class, 'storeArray']);
         Route::get('/buscar/{id}', [HabitacionesController::class, 'show']);
     });
     Route::prefix('sen')->group(function () {
