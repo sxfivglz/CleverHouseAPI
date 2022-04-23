@@ -162,7 +162,6 @@ class DetalleSensoresController extends Controller
       //regresa un arreglo
       public function sensoresHabitaciones(Request $request)
       {
-          $array = $request->toArray();
           $q="SELECT  
           s.id,s.nombre_sensor
         FROM detalle_sensores AS ds 
@@ -172,7 +171,7 @@ class DetalleSensoresController extends Controller
         ON dh.habitacion_fk = h.id
         INNER JOIN sensores AS s
         ON ds.sensor_fk = s.id
-        where h.nombre_habitacion='".$array['nombre_habitacion']."';";
+        where h.nombre_habitacion='".$request-> nombre_habitacion."';";
           $clave_base = DB::select($q);
           
           return $clave_base;
