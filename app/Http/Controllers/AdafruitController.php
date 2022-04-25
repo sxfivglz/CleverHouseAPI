@@ -20,7 +20,7 @@ class AdafruitController extends Controller
     public function ultimo_data($feed){
         $nomFeed=self::feedId($feed);
         //http client documentacion laravel
-        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/".$nomFeed."/data/recent/";
+        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/".$nomFeed."/data/last/";
         $response=Http::get($url,[
             'X-AIO-Key'=>env('ADAFRUIT_KEY'),
         ]);
@@ -38,7 +38,7 @@ class AdafruitController extends Controller
     public function dato_keypad($feed){
         $nomFeed=self::feedId($feed);
         //http client documentacion laravel
-        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/".$nomFeed."/data/recent/";
+        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/".$nomFeed."/data/last/";
         $response=Http::get($url,[
             'X-AIO-Key'=>env('ADAFRUIT_KEY'),
         ]);
@@ -88,7 +88,7 @@ class AdafruitController extends Controller
     public function getTemperatura($nombre){
         //http client documentacion laravel
         $nomFeed=self::feedId($nombre);
-        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/".$nomFeed."/data/recent/";
+        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/".$nomFeed."/data/last/";
         $response=Http::get($url,
         ['X-AIO-Key'=>env('ADAFRUIT_KEY')]);
         $obj=$response->object();
@@ -97,7 +97,7 @@ class AdafruitController extends Controller
     //prueba
     public function getLuminosidad(){
         //http client documentacion laravel
-        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/luminosidad/data/recent/";
+        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/luminosidad/data/last/";
         $response=Http::get($url,
         ['X-AIO-Key'=>env('ADAFRUIT_KEY')]);
         $obj=$response->object();
