@@ -157,7 +157,7 @@ class CasasController extends Controller
     //regresa un arreglo
     public function consultaCasaInvitado(Request $request)
     {
-        $array=$array = $request->toArray();
+        $array=$request->toArray();
         $q="SELECT
         c.nombre_casa
       FROM detalles AS d 
@@ -169,7 +169,11 @@ class CasasController extends Controller
       ON i.id = us.id
         where i.usuario_fk=(SELECT id FROM users WHERE email='".$array[0]['email']."');";
         $clave_base = DB::select($q);
-        
-        return $clave_base;
+        $clave=count($clave_base);
+        if($clave!=0){
+            return $clave_base;
+        }else{
+            return null;
+        }
     }
 }
