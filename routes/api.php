@@ -129,7 +129,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::get('/listar', [DetalleHabitacionesController::class, 'index']);
         Route::post('/insertar', [DetalleHabitacionesController::class, 'store']);
         Route::get('/buscar/{id}', [DetalleHabitacionesController::class, 'show']);
-        Route::post('/habitacionesCasa', [DetalleSensoresController::class, 'habitacionesCasa']);
+        Route::post('/habitacionesCasa', [DetalleHabitacionesController::class, 'habitacionesCasa']);
     });
 });
     //Route::get('/listar', [ProveedoresController::class, 'index']);
