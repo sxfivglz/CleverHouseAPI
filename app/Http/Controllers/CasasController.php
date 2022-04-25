@@ -139,6 +139,7 @@ class CasasController extends Controller
     //regresa un arreglo
     public function consultaCasaDuenos(Request $request)
     {
+        $array=$array = $request->toArray();
         $q="SELECT
         c.nombre_casa
       FROM detalles AS d 
@@ -148,7 +149,7 @@ class CasasController extends Controller
         ON d.dueno_fk = du.id
       INNER JOIN users AS us
       ON du.id = us.id
-        where du.usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        where du.usuario_fk=(SELECT id FROM users WHERE email='".$array[0]['email']."');";
         $clave_base = DB::select($q);
         
         return $clave_base;
@@ -156,6 +157,7 @@ class CasasController extends Controller
     //regresa un arreglo
     public function consultaCasaInvitado(Request $request)
     {
+        $array=$array = $request->toArray();
         $q="SELECT
         c.nombre_casa
       FROM detalles AS d 
@@ -165,7 +167,7 @@ class CasasController extends Controller
         ON d.invitado_fk = i.id
       INNER JOIN users AS us
       ON i.id = us.id
-        where i.usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
+        where i.usuario_fk=(SELECT id FROM users WHERE email='".$array[0]['email']."');";
         $clave_base = DB::select($q);
         
         return $clave_base;
