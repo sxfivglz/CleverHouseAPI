@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 
 //estos son pruebas
 Route::get('/Luminosidad',[AdafruitController::class,'getLuminosidad']);
-Route::get('/Distancia',[AdafruitController::class,'getDistancia']);
+Route::get('/Temperatura/{nombre}',[AdafruitController::class,'getTemperatura']);
 //sensores
 Route::get('/UltimoRegistro/{feed}',[AdafruitController::class,'ultimo_data']);
 Route::get('/TotalSensores/{hab}',[AdafruitController::class,'listarSensores']);
@@ -37,6 +37,8 @@ Route::delete('/EliminarSensor/{hab}/{nombre}',[AdafruitController::class,'elimi
 Route::post('/SensorHab/{hab}/{nombreSensor}',[AdafruitController::class,'añadirSensor']);
 Route::post('/CrearHab/{nombre}',[AdafruitController::class,'añadirHab']);
 Route::post('/CambiarSensor/{hab}/{nombreSensor}',[AdafruitController::class,'cambiarSensor']);
+Route::post('/Cerrar/{feed}',[AdafruitController::class,'Cerrar']);
+Route::post('/Abrir/{feed}',[AdafruitController::class,'Abrir']);
 Route::get('/TotalHab',[AdafruitController::class,'listarHabitaciones']);
 Route::put('/ModificarHabitacion/{nombre_habitacion}/{nuevo_nombre}',[AdafruitController::class,'modificarHabitacion']);
 Route::delete('/EliminarHabitacion/{hab}/{nombre}',[AdafruitController::class,'eliminarHabitacion']);

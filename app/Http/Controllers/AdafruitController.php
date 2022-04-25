@@ -25,6 +25,13 @@ class AdafruitController extends Controller
             'X-AIO-Key'=>env('ADAFRUIT_KEY'),
         ]);
         $obj=$response->object();
+        if($nomFeed=="temperatura"){
+            $valor=$obj->value;
+            if($valor>=35){
+                $ven=self::Abrir('ventana');
+                return 'ventana abierta debido a la temperatura';
+            }
+        }
         return $obj;
     }
     //para la comparacion
@@ -36,7 +43,8 @@ class AdafruitController extends Controller
             'X-AIO-Key'=>env('ADAFRUIT_KEY'),
         ]);
         $obj=$response->object();
-        return $obj->value;
+        $val=$obj->value;
+        return $val;
     }
 
     //para el on/off
@@ -57,10 +65,30 @@ class AdafruitController extends Controller
         ]);
         return $response;
     }
-    
-    public function getDistancia(){
+    public function Cerrar($feed){
+        $nomFeed=self::feedId($feed);
+        //mandar llamar parra tomar ultimo dato, y en base a eso negar el valor para insertarlo
+        $response=Http::post('https://io.adafruit.com/api/v2/nayelireyes/feeds/'.$nomFeed.'/data', 
+        [
+            'X-AIO-Key'=>env('ADAFRUIT_KEY'),
+            'value'=>0,
+        ]);
+        return $response;
+    }
+    public function Abrir($feed){
+        $nomFeed=self::feedId($feed);
+        //mandar llamar parra tomar ultimo dato, y en base a eso negar el valor para insertarlo
+        $response=Http::post('https://io.adafruit.com/api/v2/nayelireyes/feeds/'.$nomFeed.'/data', 
+        [
+            'X-AIO-Key'=>env('ADAFRUIT_KEY'),
+            'value'=>1,
+        ]);
+        return $response;
+    }
+    public function getTemperatura($nombre){
         //http client documentacion laravel
-        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/distancia/data/last/";
+        $nomFeed=self::feedId($nombre);
+        $url="https://io.adafruit.com/api/v2/nayelireyes/feeds/".$nomFeed."/data/last/";
         $response=Http::get($url,
         ['X-AIO-Key'=>env('ADAFRUIT_KEY')]);
         $obj=$response->object();
