@@ -143,7 +143,7 @@ class DetalleHabitacionesController extends Controller
     {
         $array=$array = $request->toArray();
         $q="SELECT
-        h.nombre_habitacion
+        h.id,h.nombre_habitacion
       FROM detalle_habitaciones AS dh 
       INNER JOIN habitaciones AS h
       ON dh.habitacion_fk = h.id
