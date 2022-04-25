@@ -160,10 +160,13 @@ class DuenosController extends Controller
         where usuario_fk=(SELECT id FROM users WHERE email='".$request->email."');";
         $clave_base = DB::select($q);
         $clave_bd =$clave_base[0];
-        if($clave_bd->clave = $clave_ada){
-            $ada=$objeto->cambiarLed($request->feed_entrada);
-            return 'entrada autorizada';
+        $bd=$clave_bd->clave;
+        if($bd == $clave_ada){
+            $ada=$objeto->Abrir($request->feed_entrada);
+            return 'acceso autorizado';
+        }else{
+            $ada=$objeto->Cerrar($request->feed_entrada);
+            return 'acceso no autorizado';
         }
-        
     }
 }
