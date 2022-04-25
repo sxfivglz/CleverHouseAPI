@@ -141,7 +141,7 @@ class CasasController extends Controller
     {
         $array=$array = $request->toArray();
         $q="SELECT
-        c.nombre_casa
+        c.id,c.nombre_casa
       FROM detalles AS d 
       INNER JOIN casas AS c
         ON d.casa_fk = c.id
@@ -159,7 +159,7 @@ class CasasController extends Controller
     {
         $array=$array = $request->toArray();
         $q="SELECT
-        c.nombre_casa
+        c.id,c.nombre_casa
       FROM detalles AS d 
       INNER JOIN casas AS c
         ON d.casa_fk = c.id
