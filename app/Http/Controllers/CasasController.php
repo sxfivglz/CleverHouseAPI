@@ -152,7 +152,12 @@ class CasasController extends Controller
       ON du.id = us.id
         where du.usuario_fk=(SELECT id FROM users WHERE email='" . $array[0]['email'] . "');";
         $clave_base = DB::select($q);
-        return $clave_base;
+        $clave=count($clave_base);
+        if($clave!=0){
+            return $clave_base;
+        }else{
+            return null;
+        }
     }
     //regresa un arreglo
     public function consultaCasaInvitado(Request $request)
