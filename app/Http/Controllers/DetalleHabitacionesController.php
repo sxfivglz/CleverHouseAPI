@@ -141,7 +141,7 @@ class DetalleHabitacionesController extends Controller
     }
     public function habitacionesCasa(Request $request)
     {
-        $array=$request->toArray();
+        $array=$array = $request->toArray();
         $q="SELECT
         h.nombre_habitacion
       FROM detalle_habitaciones AS dh 
@@ -151,7 +151,7 @@ class DetalleHabitacionesController extends Controller
       ON dh.detalle_fk = d.id
       INNER JOIN casas AS c
       ON d.casa_fk = c.id
-      where c.nombre_casa='".$array['nombre_casa']."';";
+      where c.nombre_casa='".$array[0]['nombre_casa']."';";
         $clave_base = DB::select($q);
         
         return $clave_base;
