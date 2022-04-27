@@ -154,9 +154,9 @@ class CasasController extends Controller
         $clave_base = DB::select($q);
         $clave=count($clave_base);
         if($clave!=0){
-            return $clave_base;
+            return ["no hay casas"=>$clave_base];
         }else{
-            return $clave_base=null;
+            
         }
     }
     //regresa un arreglo
