@@ -156,7 +156,7 @@ class CasasController extends Controller
         if($clave!=0){
             return $clave_base;
         }else{
-            return ["no hay casas" => $clave_base];
+            return ["no hay casas"];
         }
     }
     //regresa un arreglo
@@ -178,7 +178,7 @@ class CasasController extends Controller
       if($clave!=0){
             return $clave_base;
       }else{
-            return ["no hay casas" => $clave_base];
+            return ["no hay casas"];
        
     }
 }
