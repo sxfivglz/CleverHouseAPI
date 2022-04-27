@@ -156,7 +156,7 @@ class CasasController extends Controller
         if($clave!=0){
             return $clave_base;
         }else{
-            return null;
+            return [null];
         }
     }
     //regresa un arreglo
