@@ -79,9 +79,9 @@ class HabitacionesController extends Controller
         }
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
-            'message' => 'Habitaciones registradas',
+           /* 'message' => 'Habitaciones registradas',*/
          /**/   'datadetins' => $array,
-            'ada'=>$myVariable
+           /* 'ada'=>$myVariable*/
         ], Response::HTTP_OK);
     }
     /**
