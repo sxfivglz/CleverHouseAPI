@@ -153,11 +153,11 @@ class CasasController extends Controller
         where du.usuario_fk=(SELECT id FROM users WHERE email='" . $array[0]['email'] . "');";
         $clave_base = DB::select($q);
         $clave=count($clave_base);
-        if($clave!=0){
+       /* if($clave!=0){*/
             return $clave_base;
-        }else{
+        /*}else
             return [];
-        }
+        }*/
     }
     //regresa un arreglo
     public function consultaCasaInvitado(Request $request)
@@ -175,11 +175,11 @@ class CasasController extends Controller
         where i.usuario_fk=(SELECT id FROM users WHERE email='".$array[0]['email']."');";
         $clave_base = DB::select($q);
         $clave=count($clave_base);
-      if($clave!=0){
+    /*  if($clave!=0){*/
             return $clave_base;
-      }else{
+     /* }else{
             return [];
        
-    }
+    }*/
 }
 }

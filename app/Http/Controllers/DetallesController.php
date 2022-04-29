@@ -64,7 +64,7 @@ class DetallesController extends Controller
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
             'message' => 'Detalle registrada',
-            'data' => $val
+            'datacasa' => $val
         ], Response::HTTP_OK);
     }
     
