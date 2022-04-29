@@ -149,7 +149,7 @@ class CasasController extends Controller
       INNER JOIN duenos AS du
         ON d.dueno_fk = du.id
       INNER JOIN users AS us
-      ON du.id = us.id
+      ON du.usuario_fk = us.id
         where du.usuario_fk=(SELECT id FROM users WHERE email='" . $array[0]['email'] . "');";
         $clave_base = DB::select($q);
         $clave=count($clave_base);
