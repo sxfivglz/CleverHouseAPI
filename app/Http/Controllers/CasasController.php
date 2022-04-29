@@ -58,7 +58,7 @@ class CasasController extends Controller
         //Respuesta en caso de que todo vaya bien.
         return response()->json([
             'message' => 'Casa registrada',
-            'data' => $val
+            'datacasa' => $val
         ], Response::HTTP_OK);
     }
     /**
