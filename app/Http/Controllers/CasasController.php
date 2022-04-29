@@ -113,7 +113,7 @@ class CasasController extends Controller
         //Devolvemos los datos actualizados.
         return response()->json([
             'message' => 'Casa actualizada',
-            'data' => $Casa
+            'datacasa' => $Casa
         ], Response::HTTP_CREATED);
     }
     /**
