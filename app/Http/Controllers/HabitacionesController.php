@@ -78,11 +78,12 @@ class HabitacionesController extends Controller
         $myVariable = $objeto->añadirHab($arr['nombre_habitacion']);
         }
         //Respuesta en caso de que todo vaya bien.
-        return response()->json([
+        return $array;
+      /*   response()->json([
            /*  'message' => 'Habitaciones registradas',*/
-         /**/   'datainsarray' => $array,
+         /*    'datainsarray' => $array,*/
            /* 'ada'=>$myVariable*/
-        ], Response::HTTP_OK);
+        /*], Response::HTTP_OK);*/
     }
     /**
      * Display the specified resource.
